@@ -1,0 +1,12 @@
+Managing seat allocation for examinations is a critical task that requires accuracy and efficiency. Seat allotment is often a time-consuming process and can also lead to improper
+student distribution. This project introduces a Smart Seat Allocation System that automates the process of assigning students to classrooms based on their roll numbers. This
+system efficiently distributes the students across the available rooms, also considering some factors like seating capacity. This system efficiently distributes the students
+across the available rooms, also considering some factors like seating capacity. This system reduces the administrative workload and minimizes errors. It places the students in a
+way that prevents Assembling, maintains discipline, and reduces the risk of malpractice. The proposed system is ideal for educational institutions conducting Large-scale
+exams, ensuring a hassle-free, transparent and well-organized seating arrangement. This project not only improves efficiency but also fosters a structured and fair
+examination environment.
+• Conducting large-scale examinations in educational institutions requires a well-organized seating arrangement to ensure fairness, discipline, and efficiency. Traditionally,
+seat allotment is managed manually, which is both time-consuming and prone to errors, leading to improper studentdistribution. To address these challenges, our project
+introduces a Smart Seat Allocation System, a web-based solution that automates the process of assigning students to classrooms based on their roll numbers.The system
+effectively utilizes available classroom capacity while ensuring that students are placed strategically to minimize crowding, maintain discipline, and reduce the risk of
+malpractice. By eliminating manual errors, the system reduces the administrative workload, making the entire examination process more efficient.
