@@ -1,0 +1,167 @@
+IMPLEMENTATION:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<>tle>Smart Seat Alloca>on System</>tle>
+<style>
+body {
+font-family: 'Segoe UI', sans-serif;
+margin: 30px;
+background-color: #f1f5ﬀ;
+}
+h1 {
+text-align: center;
+color: #004ba0;
+}
+label {
+font-weight: bold;
+}
+input, select, buZon {
+margin: 8px 0;
+padding: 10px;
+width: 100%;
+border: 1px solid #ccc;
+border-radius: 5px;
+}
+buZon {
+background-color: #004ba0;
+color: white;
+font-weight: bold;
+cursor: pointer;
+}
+buZon:hover {
+background-color: #002e6d;
+}
+.class-form {
+background-color: #e0f2ﬀ;
+margin-boZom: 20px;
+padding: 15px;
+border: 1px solid #90caf9;
+border-radius: 8px;
+box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+.result {
+margin-top: 30px;
+background: #ﬀf;
+padding: 20px;
+border-radius: 8px;
+border: 1px solid #b0bec5;
+box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+}
+table {
+width: 100%;
+border-collapse: collapse;
+margin-top: 15px;
+}
+th, td {
+border: 1px solid #bbb;
+padding: 10px;
+text-align: center;
+}
+th {
+background-color: #1976d2;
+color: white;
+}
+.warning {
+color: red;
+font-weight: bold;
+}
+.info {
+color: green;
+}
+.highlight {
+background-color: #f0f8ﬀ;
+}
+</style>
+</head>
+<body>
+<h1>Smart Seat Alloca>on System</h1>
+<label>Number of Classes:</label>
+<input type="number" id="numClasses" value="1" min="1">
+<label>Alloca>on Type:</label>
+<select id="alloca>onType">
+<op>on value="1">Sequen>al</op>on>
+<op>on value="2">Random</op>on>
+</select>
+<label>Serial Number Start:</label>
+<input type="number" id="serialStart" value="1">
+<label>Serial Number End:</label>
+<input type="number" id="serialEnd" value="200">
+<div id="classesContainer"></div>
+<buZon onclick="generateClassForms()">Generate Class Forms</buZon>
+<buZon onclick="allocateSeats()">Allocate Seats</buZon>
+<div id="result" class="result"></div>
+<script>
+func>on generateClassForms() {
+const num = parseInt(document.getElementById('numClasses').value);
+const container = document.getElementById('classesContainer');
+container.innerHTML = '';
+for (let i = 0; i < num; i++) {
+container.innerHTML += `
+<div class="class-form">
+<h3>Class ${i + 1}</h3>
+<label>Capacity:</label>
+<input type="number" id="capacity${i}" value="50" min="1">
+<label>Number of Students:</label>
+<input type="number" id="students${i}" value="40" min="1">
+</div>
+`;
+}
+}
+func>on allocateSeats() {
+const alloca>onType = parseInt(document.getElementById('alloca>onType').value);
+const serialStart = parseInt(document.getElementById('serialStart').value);
+const serialEnd = parseInt(document.getElementById('serialEnd').value);
+const numClasses = parseInt(document.getElementById('numClasses').value);
+const availableSerials = serialEnd - serialStart + 1;
+let allSerialNumbers = Array.from({ length: availableSerials }, (_, i) => serialStart + i);
+// Total students needed
+let totalStudentsRequested = 0;
+const classDetails = [];
+for (let i = 0; i < numClasses; i++) {
+const capacity = parseInt(document.getElementById(`capacity${i}`).value);
+const students = parseInt(document.getElementById(`students${i}`).value);
+totalStudentsRequested += students;
+classDetails.push({ capacity, students });
+}
+if (totalStudentsRequested > allSerialNumbers.length) {
+alert("Error: Total students exceed available serial numbers!");
+return;
+}
+// Limit serial numbers to only the required total students
+let usableSerials = allSerialNumbers.slice(0, totalStudentsRequested);
+let assignedSerials = [];
+if (alloca>onType === 2) {
+usableSerials.sort(() => Math.random() - 0.5); // Shuﬄe
+}
+assignedSerials = usableSerials.slice(); // copy of serials assigned
+const remainingSerials = allSerialNumbers.filter(sn => !assignedSerials.includes(sn));
+let resultHTML = `<h2>Alloca>on
+Results</h2><table><tr><th>Classroom</th><th>Allocated Serial Numbers</th></tr>`;
+let index = 0;
+for (let i = 0; i < numClasses; i++) {
+const { capacity, students } = classDetails[i];
+const totalSeats = Math.min(capacity, students);
+const allocated = assignedSerials.slice(index, index + totalSeats);
+index += totalSeats;
+resultHTML += `<tr class="highlight"><td>Class ${i + 1}</td><td>${allocated.join(',
+')}</td></tr>`;
+if (students > capacity) {
+resultHTML += `<tr><td colspan="2" class="warning">Warning: Class capacity exceeded
+by ${students - capacity} students!</td></tr>`;
+} else if (students < capacity) {
+resultHTML += `<tr><td colspan="2" class="info">Info: ${capacity - students} seats s>ll
+available.</td></tr>`;
+}
+}
+resultHTML += `</table>`;
+if (remainingSerials.length > 0) {
+resultHTML += `<h3>Remaining Serial Numbers (Not Allocated):</h3><p
+class="info">${remainingSerials.join(', ')}</p>`;
+}
+document.getElementById('result').innerHTML = resultHTML;
+}
+</script>
+</body>
+</html>
